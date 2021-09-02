@@ -36,11 +36,12 @@ const getTokens = async () => {
                                         console.log(logos.symbol);
                                         // console.log(logos.image.small);
                                         // console.log(logos[i].image.small);
-                                        
-                                        download(logos.image.small, `./images/${logos.symbol}.png`, function(){
-                                                count ++;
-                                        // console.log('done');
-                                        });
+                                        if(!`./images/${logos.symbol}.png`){
+                                                download(logos.image.small, `./images/${logos.symbol}.png`, function(){
+                                                        count ++;
+                                                // console.log('done');
+                                                })
+                                        }
                                 }catch(err){
                                         console.log(`Error in for loop ${err}`)
                                 }

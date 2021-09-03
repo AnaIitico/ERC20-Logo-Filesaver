@@ -30,17 +30,21 @@ const getTokens = async () => {
                                 try{
                                         const url1 = `https://api.coingecko.com/api/v3/coins/${ERC20Tokens[i]}`;
                                         const result = await fetch(url1);
-                                        await delay(1000);
+                                        await delay(2000);
                                         const logos = await result.json();
-                                        await delay(1000);
-                                        console.log(logos.symbol);
+                                        await delay(2000);
                                         // console.log(logos.image.small);
                                         // console.log(logos[i].image.small);
-                                        if(!`./images/${logos.symbol}.png`){
+                                        if(fs.existsSync(`./images/${logos.symbol}.png`)){
+                                                console.log(`${logos.symbol} file present`);
+                                                
+                                        }
+                                        else{
                                                 download(logos.image.small, `./images/${logos.symbol}.png`, function(){
                                                         count ++;
-                                                // console.log('done');
+                                                        // console.log('done');
                                                 })
+                                                console.log(`${logos.symbol} file written`);
                                         }
                                 }catch(err){
                                         console.log(`Error in for loop ${err}`)

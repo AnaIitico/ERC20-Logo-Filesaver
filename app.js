@@ -41,7 +41,6 @@ const getTokens = async () => {
                                         }
                                         else{
                                                 download(logos.image.small, `./images/${logos.symbol}.png`, function(){
-                                                        count ++;
                                                         // console.log('done');
                                                 })
                                                 console.log(`${logos.symbol} file written`);
@@ -49,8 +48,9 @@ const getTokens = async () => {
                                 }catch(err){
                                         console.log(`Error in for loop ${err}`)
                                 }
+                                console.log(`Count = ${count}`);
+                                count ++;
                         }
-                        console.log(`Count = ${count}`)
                 })();
         }catch(err){
                 console.log(`There was an error ${err}`)

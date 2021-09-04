@@ -12,13 +12,10 @@ const getTokens = async () => {
                 const tokens = await response.json();
                 // console.log(tokens);
                 // console.log(tokens[31].platforms.ethereum);
-                tokens.forEach((token, index) => {
+                tokens.forEach(token => {
                         if(token.platforms.ethereum || token.id === "ethereum"){
                                 // console.log(`It worked!`);
                                 // console.log(`${token.id} ${token.platforms.ethereum}`)
-                                // if(token.id === "ethereum"){
-                                //         console.log(token.symbol, index)
-                                // }
                                 ERC20Tokens.push(token.id);
                         }
                 });
@@ -29,7 +26,7 @@ const getTokens = async () => {
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
                 (async function loop() {
-                        for (let i = 2438+1715; i < ERC20Tokens.length; i++) {
+                        for (let i = 0; i < ERC20Tokens.length; i++) {
                                 try{
                                         const url1 = `https://api.coingecko.com/api/v3/coins/${ERC20Tokens[i]}`;
                                         const result = await fetch(url1);
@@ -44,9 +41,9 @@ const getTokens = async () => {
                                                 
                                         }
                                         else{
-                                                // download(logos.image.small, `./images/${symbol}.png`, function(){
-                                                //         // console.log('done');
-                                                // })
+                                                download(logos.image.small, `./images/${symbol}.png`, function(){
+                                                        // console.log('done');
+                                                })
                                                 console.log(`${symbol} file written`);
                                         }
                                 }catch(err){

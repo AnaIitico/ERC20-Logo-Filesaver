@@ -12,10 +12,13 @@ const getTokens = async () => {
                 const tokens = await response.json();
                 // console.log(tokens);
                 // console.log(tokens[31].platforms.ethereum);
-                tokens.forEach(token => {
-                        if(token.platforms.ethereum){
+                tokens.forEach((token, index) => {
+                        if(token.platforms.ethereum || token.id === "ethereum"){
                                 // console.log(`It worked!`);
                                 // console.log(`${token.id} ${token.platforms.ethereum}`)
+                                // if(token.id === "ethereum"){
+                                //         console.log(token.symbol, index)
+                                // }
                                 ERC20Tokens.push(token.id);
                         }
                 });
@@ -26,24 +29,25 @@ const getTokens = async () => {
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
                 (async function loop() {
-                        for (let i = 0; i < ERC20Tokens.length; i++) {
+                        for (let i = 2438+1715; i < ERC20Tokens.length; i++) {
                                 try{
                                         const url1 = `https://api.coingecko.com/api/v3/coins/${ERC20Tokens[i]}`;
                                         const result = await fetch(url1);
-                                        await delay(2000);
+                                        await delay(3000);
                                         const logos = await result.json();
                                         await delay(2000);
                                         // console.log(logos.image.small);
                                         // console.log(logos[i].image.small);
-                                        if(fs.existsSync(`./images/${logos.symbol}.png`)){
-                                                console.log(`${logos.symbol} file present`);
+                                        const symbol = removeChar(logos.symbol);
+                                        if(fs.existsSync(`./images/${symbol}.png`)){
+                                                console.log(`${symbol} file present`);
                                                 
                                         }
                                         else{
-                                                download(logos.image.small, `./images/${logos.symbol}.png`, function(){
-                                                        // console.log('done');
-                                                })
-                                                console.log(`${logos.symbol} file written`);
+                                                // download(logos.image.small, `./images/${symbol}.png`, function(){
+                                                //         // console.log('done');
+                                                // })
+                                                console.log(`${symbol} file written`);
                                         }
                                 }catch(err){
                                         console.log(`Error in for loop ${err}`)
@@ -57,14 +61,22 @@ const getTokens = async () => {
         }
 }
 
-getTokens();
+const removeChar = (string, i = 0, res = "") => {
+        if(i >= string.length)
+            return res;
+        else if(string[i] == "/")
+            return removeChar(string, i + 1, res);
+        else
+            return removeChar(string, i + 1, res += string[i]);
+    }
 
 var download = function(uri, filename, callback){
         request.head(uri, function(err, res, body){
-        // console.log('content-type:', res.headers['content-type']);
-        // console.log('content-length:', res.headers['content-length']);
-
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                // console.log('content-type:', res.headers['content-type']);
+                // console.log('content-length:', res.headers['content-length']);
+                
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
         });
 };
 
+getTokens();

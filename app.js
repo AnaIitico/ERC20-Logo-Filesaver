@@ -35,7 +35,7 @@ const getTokens = async () => {
                                         await delay(2000);
                                         // console.log(logos.image.small);
                                         // console.log(logos[i].image.small);
-                                        const symbol = removeChar(logos.symbol);
+                                        const symbol = removeChar(logos.symbol.toLowerCase());
                                         if(fs.existsSync(`./images/${symbol}.png`)){
                                                 console.log(`${symbol} file present`);
                                                 
